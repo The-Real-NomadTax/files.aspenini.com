@@ -1,14 +1,26 @@
 {
-  "generated": "2025-12-05T06:43:04.668478+00:00",
+  "generated": "2025-12-05T18:30:41.379438+00:00",
   "folders": [
     {
       "name": "midi",
       "files": [
         {
+          "name": "Africa.mid"
+        },
+        {
+          "name": "Bad_To_The_Bone.mid"
+        },
+        {
+          "name": "Break_Stuff.mid"
+        },
+        {
           "name": "California_Gurls.mid"
         },
         {
           "name": "Crazy_Train.mid"
+        },
+        {
+          "name": "Danger_Zone.mid"
         },
         {
           "name": "Dont_Stop_Believin.mid"
@@ -26,7 +38,16 @@
           "name": "Monster.mid"
         },
         {
+          "name": "Papercut.mid"
+        },
+        {
+          "name": "PARADVAL.mid"
+        },
+        {
           "name": "Paranoid.mid"
+        },
+        {
+          "name": "September.mid"
         },
         {
           "name": "Smoke_On_The_Water.mid"
