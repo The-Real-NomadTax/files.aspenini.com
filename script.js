@@ -41,6 +41,7 @@ const ICONS = {
 };
 
 let toastTimeout;
+let filesData = null;
 
 function getIcon(ext) {
     return ICONS[ext.toLowerCase()] || ICONS.default;
@@ -60,7 +61,7 @@ function copyUrl(path, btn) {
         setTimeout(() => {
             btn.classList.remove('copied');
             label.textContent = origText;
-        }, 1800);
+        }, 2000);
     }).catch(() => {
         showToast('Copy failed');
     });
@@ -140,11 +141,64 @@ function renderFiles(data) {
     container.innerHTML = html;
 }
 
+function filterFiles(searchTerm) {
+    if (!filesData) return;
+    
+    const term = searchTerm.toLowerCase().trim();
+    
+    if (!term) {
+        renderFiles(filesData);
+        return;
+    }
+    
+    const filtered = {
+        folders: filesData.folders.map(folder => {
+            const matchingFiles = folder.files.filter(file => 
+                file.name.toLowerCase().includes(term) ||
+                folder.name.toLowerCase().includes(term)
+            );
+            
+            return {
+                name: folder.name,
+                files: matchingFiles
+            };
+        }).filter(folder => folder.files.length > 0)
+    };
+    
+    renderFiles(filtered);
+}
+
 async function init() {
     try {
         const response = await fetch('files.json');
         const data = await response.json();
+        filesData = data;
         renderFiles(data);
+        
+        // Setup search functionality
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+        
+        searchInput.addEventListener('input', (e) => {
+            filterFiles(e.target.value);
+            clearBtn.style.opacity = e.target.value ? '1' : '0';
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterFiles('');
+            clearBtn.style.opacity = '0';
+            searchInput.focus();
+        });
+        
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                filterFiles('');
+                clearBtn.style.opacity = '0';
+            }
+        });
+        
     } catch (err) {
         console.error('Failed to load files:', err);
         document.getElementById('fileList').innerHTML = 
